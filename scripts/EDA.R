@@ -22,7 +22,7 @@ to_mmt <- function(x) {
 
 # Loading Data ------------------------------------------------------------
 
-eGRID <- read.csv("data/final_dataset.csv")
+eGRID <- read.csv('data/final_dataset.csv')
 eGRID
 
 dim(eGRID)
@@ -48,8 +48,8 @@ co2_per_year <- ggplot() +
                         fill = PLFUELCT),
            stat='identity') + 
   geom_hline(yintercept = mean_co2, 
-             linetype = "dashed", 
-             color = "blue") +
+             linetype = 'dashed', 
+             color = 'blue') +
   annotate('text',
            y= mean_co2,
            x = 2020,
@@ -59,13 +59,13 @@ co2_per_year <- ggplot() +
   scale_x_continuous(breaks = breaks_width(1)) + 
   labs(title = 'Total CO2 Emissions by Fossil Plants (2018 - 2023)',
        x = 'Year',
-       y = '"CO2 (million metric tons)',
-       fill = "Fuel Type",
+       y = 'CO2 (million metric tons)',
+       fill = 'Fuel Type',
        caption = 'Source: EPA eGRID, plant-level data (2018–2023)') +
   theme_few()
 co2_per_year
 
-ggsave("figures/yearly_co2_fuelstacked.png", plot=co2_per_year, 
+ggsave('figures/yearly_co2_fuelstacked.png', plot=co2_per_year, 
        width = fig_w, height = fig_h)
 
 # CO2 Emissions (STATE) ------------------------------------------------------
@@ -116,7 +116,7 @@ state_co2_graph <- ggplot(
   theme_few()
 state_co2_graph
 
-ggsave("figures/totalco2_by_state.png", plot=state_co2_graph, 
+ggsave('figures/totalco2_by_state.png', plot=state_co2_graph, 
        width = fig_w, height = fig_h)
 
 # Fuel Type (2)  --------------------------------------------------------------
@@ -157,17 +157,17 @@ ggsave('figures/fuel_boxplot.png', plot = fuel_box,
 # Treatment v Control Pre -------------------------------------------------
 treat_c <- eGRID %>%
   mutate(group = case_when(
-    TREATED == 1 ~ "Treatment",
-    NEIGHBOR == 1 ~ "Neighbor Control",
-    TRUE ~ "Far Control"
+    TREATED == 1 ~ 'Treatment',
+    NEIGHBOR == 1 ~ 'Neighbor Control',
+    TRUE ~ 'Far Control'
   )) %>%
   mutate(group = factor(group, 
-                        levels = c("Far Control","Neighbor Control","Treatment")))
+                        levels = c('Far Control','Neighbor Control','Treatment')))
 # treat_c <- eGRID %>%
 #   filter(POST == 0) %>% 
 #   mutate(TREATED = factor(TREATED, 
 #                           levels = c(0, 1), 
-#                           labels = c("Control", "Treated")
+#                           labels = c('Control', 'Treated')
 #                           )
 #          )
 
@@ -175,9 +175,9 @@ co2_rate <- ggplot(treat_c, aes(x = PLFUELCT, y = PLCO2RTA)) +
   geom_boxplot(outlier.shape = 1) +
   stat_summary(
     fun = median,
-    geom = "text",
+    geom = 'text',
     aes(label = round(after_stat(y), 0)),
-    fontface = "bold", 
+    fontface = 'bold', 
     vjust = -4,
     color = 'red',
     size = 4
@@ -185,10 +185,10 @@ co2_rate <- ggplot(treat_c, aes(x = PLFUELCT, y = PLCO2RTA)) +
   coord_flip() +
   facet_grid(group ~ .) +
   labs(
-    title = "Carbon Intensity of Fuel Types Pre-Treatment",
-    x = "Fuel",
-    y = "CO2 emission rate (lb/MWh)",
-    caption = "Source: EPA eGRID, plant-level data (2018–2021)"
+    title = 'Carbon Intensity of Fuel Types Pre-Treatment',
+    x = 'Fuel',
+    y = 'CO2 emission rate (lb/MWh)',
+    caption = 'Source: EPA eGRID, plant-level data (2018–2021)'
   ) +
   scale_y_log10() +
   theme_few()
