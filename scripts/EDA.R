@@ -80,8 +80,7 @@ total_state <- ggplot() +
                          y = total_co2_mil,
                          fill = PSTATABB),
            stat='identity',
-           alpha = 0.8,
-           color = 'black'
+           alpha = 0.8
   ) +
   labs(title = 'Total CO2 Emissions by State (2018 - 2023)',
        y= 'CO2 (million metric tons,',
@@ -178,7 +177,7 @@ co2_rate <- ggplot(treat_c, aes(x = PLFUELCT, y = PLCO2RTA)) +
     geom = 'text',
     aes(label = round(after_stat(y), 0)),
     fontface = 'bold', 
-    vjust = -4,
+    vjust = -2.5,
     color = 'red',
     size = 4
   ) +

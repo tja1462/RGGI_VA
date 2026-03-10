@@ -50,7 +50,10 @@ co2_em <- ggplot(treat_c, aes(x = YEAR,
   labs(title = 'Average CO2 Emissions per Plant',
        y = 'CO2 Emission (Million Metric Tons)', 
        x = 'Year', 
-       color = 'Group')
+       color = 'Group') +
+  theme_bw(base_size = 12) +
+  theme(axis.text = element_text(size = 12),
+        text = element_text(face = "bold")) 
 co2_em
 ggsave('figures/co2em_pt.png', plot = co2_em,
        width = fig_w, height = fig_h)
@@ -66,7 +69,10 @@ co2_rate <- ggplot(treat_c, aes(x = YEAR,
   labs(title = 'Average Plant Carbon Intensity',
        y = 'CO2 Emission (lb/MWh)', 
        x = 'Year', 
-       color = 'Group')
+       color = 'Group') + 
+  theme_bw(base_size = 12) +
+  theme(axis.text = element_text(size = 12),
+        text = element_text(face = "bold")) 
 co2_rate
 ggsave('figures/CO2rate_pt.png', plot = co2_rate,
        width = fig_w, height = fig_h)
@@ -82,7 +88,10 @@ co2_capfac <- ggplot(treat_c, aes(x = YEAR,
   labs(title = 'Mean Plant Capacity Factor',
        y = 'Capacity Factor', 
        x = 'Year', 
-       color = 'Group')
+       color = 'Group') +
+  theme_bw(base_size = 12) +
+  theme(axis.text = element_text(size = 12),
+        text = element_text(face = "bold")) 
 co2_capfac 
 ggsave('figures/capfac_pt.png', plot = co2_capfac,
        width = fig_w, height = fig_h)
@@ -98,13 +107,17 @@ es_co2 <- feols(
   cluster = ~ORISPL,
   data = ESGRID
 )
-png('figures/es_co2.png', width = fig_w, height = fig_h, units = 'in', res = 300)
+png('figures/es_co2.png', width = fig_w, height = fig_h, 
+    units = 'in', res = 300, pointsize = 14)
 iplot(
   es_co2,
   ref.line = -0.5,
   xlab = 'Years relative to 2021',
   ylab = 'Coefficient',
-  main = 'Event-study: Effect on CO2 Emissions'
+  main = 'Yearly Effect on CO2 Emissions',
+  pt.cex = 1.8,
+  ci.lwd = 2,
+  plot_prms = list(cex.axis = 1, font.axis = 2)
 )
 dev.off()
 
@@ -113,13 +126,17 @@ es_co2rt <- feols(
   cluster = ~ORISPL,
   data = ESGRID
 )
-png('figures/es_co2rt.png', width = fig_w, height = fig_h, units = 'in', res = 300)
+png('figures/es_co2rt.png', width = fig_w, height = fig_h,
+    units = 'in', res = 300, pointsize = 14)
 iplot(
   es_co2rt,
   ref.line = -0.5,
   xlab = 'Years relative to 2021',
   ylab = 'Coefficient',
-  main = 'Event-study: Effect on CO2 Output Rate'
+  main = 'Yearly Effect on CO2 Output Rate',
+  pt.pch = 1,
+  ci.lwd = 2,
+  plot_prms = list(cex.axis = 1, font.axis = 2)
 )
 dev.off()
 
@@ -128,13 +145,17 @@ es_cf <- feols(
   cluster = ~ORISPL,
   data = ESGRID
 )
-png('figures/es_cf.png', width = fig_w, height = fig_h, units = 'in', res = 300)
+png('figures/es_cf.png', width = fig_w, height = fig_h, 
+    units = 'in', res = 300, pointsize = 14)
 iplot(
   es_cf ,
   ref.line = -0.5,
   xlab = 'Years relative to 2021',
   ylab = 'Coefficient',
-  main = 'Event-study: Effect on Capacity Factor'
+  main = 'Event-study: Effect on Capacity Factor',
+  pt.cex = 1.8,
+  ci.lwd = 2,
+  plot_prms = list(cex.axis = 1, font.axis = 2)
 )
 dev.off()
 etable(es_co2, es_co2rt, es_cf)
@@ -229,7 +250,7 @@ honest_model_titles <- c(
 
 honest_results <- imap(honest_models, function(model, model_name) {
   res <- run_honest_did(model)
-  display_name <- honest_model_labels[model_name]
+  display_name <- honest_model_titles[model_name]
   if (is.na(display_name)) {
     display_name <- model_name
   }
@@ -239,11 +260,15 @@ honest_results <- imap(honest_models, function(model, model_name) {
     originalResults = res$original
   ) +
     labs(
-      title = paste('HonestDiD Sensitivity:', display_name),
-      subtitle = 'Target: treated effect in first post period',
+      title = paste(display_name, 'sensitivity analysis for first post period:'),
       x = 'Mbar',
       y = '95% confidence'
-    )
+    ) +
+    theme_bw(base_size = 12) +
+    theme(axis.text = element_text(size = 12),
+          legend.position = "none",
+          text = element_text(face = "bold")) 
+  
 
   ggsave( paste0('figures/honestdid_', model_name, '.png'),
     plot = p,

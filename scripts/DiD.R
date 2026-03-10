@@ -27,7 +27,16 @@ m_co2rt <- feols(y_co2rt ~ did + neigh_post | ORISPL + YEAR,
                  cluster = ~ORISPL,
                  data = eGRID)
 
-did_table <- etable(m_co2, m_cap, m_co2rt)
+did_table <- etable(
+  m_co2, m_co2rt, m_cap,
+  dict = c(
+    y_co2 = "CO2 Emissions",
+    y_co2rt = "Carbon Intensity",
+    CAPFAC = "Capacity Factor",
+    did = "Treated x Post",
+    neigh_post = "Neighbor x Post"
+  )
+)
 did_table
 did_lines <- capture.output(print(did_table))
 n <- length(did_lines)
