@@ -27,20 +27,30 @@ m_co2rt <- feols(y_co2rt ~ did + neigh_post | ORISPL + YEAR,
                  cluster = ~ORISPL,
                  data = eGRID)
 
+etable_dict <- c(
+  y_co2 = "CO2 Emissions",
+  y_co2rt = "Carbon Intensity",
+  CAPFAC = "Capacity Factor",
+  did = "Treated x Post",
+  neigh_post = "Neighbor x Post"
+)
+
 did_table <- etable(
   m_co2, m_co2rt, m_cap,
-  dict = c(
-    y_co2 = "CO2 Emissions",
-    y_co2rt = "Carbon Intensity",
-    CAPFAC = "Capacity Factor",
-    did = "Treated x Post",
-    neigh_post = "Neighbor x Post"
-  )
+  dict = etable_dict
 )
 did_table
 did_lines <- capture.output(print(did_table))
 n <- length(did_lines)
 y_pos <- seq(0.985, 0.02, length.out = n)
+
+etable(
+  m_co2, m_co2rt, m_cap,
+  dict = etable_dict,
+  tex = TRUE,
+  file = "tables/did_table.tex",
+  replace = TRUE
+)
 
 # PDF
 grDevices::pdf("figures/did_table.pdf", width = 13, height = max(4, 0.25 * n))

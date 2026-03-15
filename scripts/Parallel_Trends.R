@@ -53,7 +53,8 @@ co2_em <- ggplot(treat_c, aes(x = YEAR,
        color = 'Group') +
   theme_bw(base_size = 12) +
   theme(axis.text = element_text(size = 12),
-        text = element_text(face = "bold")) 
+        text = element_text(face = "bold"),
+        legend.justification = c("left", "top")) 
 co2_em
 ggsave('figures/co2em_pt.png', plot = co2_em,
        width = fig_w, height = fig_h)
@@ -72,7 +73,8 @@ co2_rate <- ggplot(treat_c, aes(x = YEAR,
        color = 'Group') + 
   theme_bw(base_size = 12) +
   theme(axis.text = element_text(size = 12),
-        text = element_text(face = "bold")) 
+        text = element_text(face = "bold"),
+        legend.justification = c("left", "top")) 
 co2_rate
 ggsave('figures/CO2rate_pt.png', plot = co2_rate,
        width = fig_w, height = fig_h)
@@ -91,7 +93,8 @@ co2_capfac <- ggplot(treat_c, aes(x = YEAR,
        color = 'Group') +
   theme_bw(base_size = 12) +
   theme(axis.text = element_text(size = 12),
-        text = element_text(face = "bold")) 
+        text = element_text(face = "bold"),
+        legend.justification = c("left", "top")) 
 co2_capfac 
 ggsave('figures/capfac_pt.png', plot = co2_capfac,
        width = fig_w, height = fig_h)
