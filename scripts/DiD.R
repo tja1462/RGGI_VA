@@ -4,6 +4,8 @@ library(tidyverse)
 library(ggthemes)
 library(fixest)
 
+set.seed(42)
+
 fig_h <- 8
 fig_w <- 11
 
