@@ -11,6 +11,8 @@ library(fixest)
 library(HonestDiD)
 library(purrr)
 
+set.seed(42)
+
 fig_h <- 8
 fig_w <- 11
 
